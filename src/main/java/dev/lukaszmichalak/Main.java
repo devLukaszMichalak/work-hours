@@ -71,17 +71,19 @@ public class Main {
     private static void setWorkHourCell(XSSFRow row, int cellNumber, int day, int daysInMonth, int dayOfWeek, LocalTime hour) {
         XSSFCell startTimeCell = row.getCell(cellNumber);
         startTimeCell.setBlank();
-        if (day <= daysInMonth) {
-            if (dayOfWeek == Calendar.SATURDAY) {
-                startTimeCell.setCellValue("SOBOTA");
+        if (day > daysInMonth) {
+            return;
+        }
 
-            } else if (dayOfWeek == Calendar.SUNDAY) {
-                startTimeCell.setCellValue("NIEDZIELA");
+        if (dayOfWeek == Calendar.SATURDAY) {
+            startTimeCell.setCellValue("SOBOTA");
 
-            } else {
-                var timeToSet = LocalDateTime.of(LocalDate.now(), hour);
-                startTimeCell.setCellValue(timeToSet);
-            }
+        } else if (dayOfWeek == Calendar.SUNDAY) {
+            startTimeCell.setCellValue("NIEDZIELA");
+
+        } else {
+            var timeToSet = LocalDateTime.of(LocalDate.now(), hour);
+            startTimeCell.setCellValue(timeToSet);
         }
     }
 
