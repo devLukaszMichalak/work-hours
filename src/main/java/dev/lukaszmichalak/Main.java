@@ -23,15 +23,8 @@ public class Main {
         XSSFWorkbook workbook = getWorkbook();
         XSSFSheet sheet = workbook.getSheet("C.H.Beck");
 
-        LocalDateTime workStartHour = LocalDateTime.of(
-                LocalDate.now(),
-                LocalTime.of(8, 30)
-        );
-
-        LocalDateTime workEndHour = LocalDateTime.of(
-                LocalDate.now(),
-                LocalTime.of(16, 30)
-        );
+        LocalTime workStartHour = LocalTime.of(8, 30);
+        LocalTime workEndHour = LocalTime.of(16, 30);
 
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -75,16 +68,19 @@ public class Main {
         cell.setCellValue(value);
     }
 
-    private static void setWorkHourCell(XSSFRow row, int cellNumber, int day, int daysInMonth, int dayOfWeek, LocalDateTime hour) {
+    private static void setWorkHourCell(XSSFRow row, int cellNumber, int day, int daysInMonth, int dayOfWeek, LocalTime hour) {
         XSSFCell startTimeCell = row.getCell(cellNumber);
         startTimeCell.setBlank();
         if (day <= daysInMonth) {
             if (dayOfWeek == Calendar.SATURDAY) {
                 startTimeCell.setCellValue("SOBOTA");
+
             } else if (dayOfWeek == Calendar.SUNDAY) {
                 startTimeCell.setCellValue("NIEDZIELA");
+
             } else {
-                startTimeCell.setCellValue(hour);
+                var timeToSet = LocalDateTime.of(LocalDate.now(), hour);
+                startTimeCell.setCellValue(timeToSet);
             }
         }
     }
