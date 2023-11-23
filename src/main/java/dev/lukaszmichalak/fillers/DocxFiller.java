@@ -31,30 +31,56 @@ public class DocxFiller implements Filler {
     
     private void fillRunIfNecessary(XWPFRun run, int moneyPerHour) {
         switch (run.text()) {
-            case "date":
-                fillDate(run);
-                break;
-            
-            case "month":
-                fillMonth(run); //todo fill year
-                break;
-            
-            case "day-range":
-                fillDayRange(run);
-                break;
-            
-            case "hours":
-                System.out.println("hours");
-                break;
-            case "total":
-                System.out.println("total");
-                break;
-            case "spelled-out-total":
-                System.out.println("spelled-out-total");
-                break;
-            //todo add case for money-per-hour
-            default:
+            case "date" -> fillDate(run);
+            case "monthyear" -> fillMonthYear(run);
+            case "dayrange" -> fillDayRange(run);
+            case "hours" -> fillHours(run);
+            case "total" -> fillTotal(run, moneyPerHour);
+            case "moneyperhour" -> fillMoneyPerHour(run, moneyPerHour);
+            default -> {
+            }
         }
+    }
+    
+    private void fillTotal(XWPFRun run, int moneyPerHour) {
+        cleanRun(run);
+        run.setItalic(false);
+        
+        int workingHours = getWorkingHours();
+        
+        run.setText(String.valueOf(workingHours * moneyPerHour));
+    }
+    
+    private void fillHours(XWPFRun run) {
+        cleanRun(run);
+        run.setItalic(false);
+        
+        String workingHours = String.valueOf(getWorkingHours());
+        
+        run.setText(workingHours);
+    }
+    
+    private int getWorkingHours() {
+        Calendar calendar = Calendar.getInstance();
+        int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int counter = 0;
+        
+        for (int day = 1; day <= 31; day++) {
+            calendar.set(Calendar.DAY_OF_MONTH, day);
+            
+            if (day > daysInMonth) {
+                break;
+            }
+            
+            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+            if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) {
+                continue;
+            }
+            
+            counter++;
+        }
+        
+        return counter * 8;
     }
     
     private void fillDayRange(XWPFRun run) {
@@ -81,14 +107,23 @@ public class DocxFiller implements Filler {
         run.setText(formattedDate);
     }
     
-    private void fillMonth(XWPFRun run) {
+    private void fillMoneyPerHour(XWPFRun run, int moneyPerHour) {
+        cleanRun(run);
+        run.setItalic(false);
+        
+        run.setText(String.valueOf(moneyPerHour));
+    }
+    
+    private void fillMonthYear(XWPFRun run) {
         cleanRun(run);
         run.setItalic(false);
         
         int month = Calendar.getInstance().get(Calendar.MONTH);
         String monthText = MonthTranslator.getMonthNameInPolish(month).toUpperCase();
+        int year = Calendar.getInstance().get(Calendar.YEAR);
         
-        run.setText(monthText);
+        
+        run.setText(monthText + " " + year);
     }
     
     @Override
