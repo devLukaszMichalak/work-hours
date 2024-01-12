@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.poi.ooxml.POIXMLDocument;
 import org.apache.poi.xssf.usermodel.*;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -54,8 +55,8 @@ public class XlsxFiller implements Filler {
     }
     
     @Override
-    public POIXMLDocument getDocument() {
-        try (FileInputStream templateXlsx = new FileInputStream("template.xlsx")) {
+    public POIXMLDocument getDocumentFromFile(File file) {
+        try (FileInputStream templateXlsx = new FileInputStream(file)) {
             return new XSSFWorkbook(templateXlsx);
             
         } catch (IOException e) {

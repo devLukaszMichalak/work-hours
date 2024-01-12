@@ -7,6 +7,7 @@ import org.apache.poi.ooxml.POIXMLDocument;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -127,8 +128,8 @@ public class DocxFiller implements Filler {
     }
     
     @Override
-    public POIXMLDocument getDocument() {
-        try (FileInputStream templateXlsx = new FileInputStream("template.docx")) {
+    public POIXMLDocument getDocumentFromFile(File file) {
+        try (FileInputStream templateXlsx = new FileInputStream(file)) {
             return new XWPFDocument(templateXlsx);
             
         } catch (IOException e) {
