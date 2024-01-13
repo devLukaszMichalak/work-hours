@@ -18,9 +18,11 @@ public class Main extends Application {
         Main.mainStage = mainStage;
         
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Scene scene = new Scene(fxmlLoader.load(), 270, 200);
+        scene.getStylesheets().add(getClass().getResource("main.css").toExternalForm());
         
         mainStage.setScene(scene);
+        mainStage.setResizable(false);
         mainStage.show();
     }
 }

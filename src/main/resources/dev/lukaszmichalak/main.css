@@ -1,0 +1,21 @@
+.docx-button {
+    -fx-background-color: #2a5699;
+}
+
+.xlsx-button {
+    -fx-background-color: #1f7246;
+}
+
+.save-button {
+    -fx-background-color: #676767;
+}
+
+.button {
+    -fx-text-fill: white;
+    -fx-padding: 10px;
+}
+
+.button:hover {
+    -fx-opacity: 0.8;
+    -fx-cursor: hand;
+}
