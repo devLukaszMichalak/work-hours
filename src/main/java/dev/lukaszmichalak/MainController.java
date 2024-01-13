@@ -6,9 +6,11 @@ import dev.lukaszmichalak.fillers.XlsxFiller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,20 +31,21 @@ public class MainController implements Initializable {
     private File xlsxFile = null;
     
     @FXML
-    public TextField moneyPerHourField;
+    private TextField moneyPerHourField;
     
     @FXML
-    public Button docxButton;
+    private Button docxButton;
     
     @FXML
-    public Button xlsxButton;
+    private Button xlsxButton;
     
     @FXML
-    public Button generateButton;
+    private Button generateButton;
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         docxButton.setDisable(true);
+        generateButton.setDisable(true);
         moneyPerHourField.setDisable(true);
         
         moneyPerHourField.addEventFilter(KeyEvent.KEY_TYPED, event -> {
@@ -50,11 +53,20 @@ public class MainController implements Initializable {
                 event.consume();
             }
         });
+        
+        moneyPerHourField.textProperty().addListener((observable, oldValue, newValue) ->
+                        generateButton.setDisable(newValue.isBlank())
+        );
     }
     
-    public void onXlsxClick(ActionEvent actionEvent) {
+    @FXML
+    private void onXlsxClick(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select xlsx file");
+        
+        FileChooser.ExtensionFilter xlsxFilter = new FileChooser.ExtensionFilter("Xlsx files (*.xlsx)", "*.xlsx");
+        fileChooser.getExtensionFilters().add(xlsxFilter);
+        
         xlsxFile = fileChooser.showOpenDialog(Main.mainStage);
         
         if (xlsxFile != null) {
@@ -63,9 +75,14 @@ public class MainController implements Initializable {
         }
     }
     
-    public void onDocxClick(ActionEvent actionEvent) {
+    @FXML
+    private void onDocxClick(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select docx file");
+        
+        FileChooser.ExtensionFilter xlsxFilter = new FileChooser.ExtensionFilter("Docx files (*.docx)", "*.docx");
+        fileChooser.getExtensionFilters().add(xlsxFilter);
+        
         docxFile = fileChooser.showOpenDialog(Main.mainStage);
         
         if (docxFile != null) {
@@ -74,16 +91,43 @@ public class MainController implements Initializable {
         }
     }
     
-    public void onGenerateClick(ActionEvent actionEvent) {
+    @FXML
+    private void onGenerateClick(ActionEvent actionEvent) {
         log.info("Rozpoczęto wypełnianie dla stawki " + moneyPerHourField.getText());
+        try {
+            POIXMLDocument workbook = xlsxFiller.getDocumentFromFile(xlsxFile);
+            workbook = xlsxFiller.fill(workbook, Integer.parseInt(moneyPerHourField.getText()));
+            xlsxFiller.saveToFile(workbook);
+            
+            POIXMLDocument docx = docxFiller.getDocumentFromFile(docxFile);
+            docx = docxFiller.fill(docx, Integer.parseInt(moneyPerHourField.getText()));
+            docxFiller.saveToFile(docx);
+            
+            showSuccess();
+        } catch (Exception e) {
+            showError(e);
+        }
+
+    }
+    
+    private void showSuccess() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.setContentText("Successfully generated files");
         
-        POIXMLDocument workbook = xlsxFiller.getDocumentFromFile(xlsxFile);
-        workbook = xlsxFiller.fill(workbook, Integer.parseInt(moneyPerHourField.getText()));
-        xlsxFiller.saveToFile(workbook);
+        alert.showAndWait();
+    }
+    
+    private void showError(Exception e) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.setContentText("A generation error occurred! " + e.getMessage());
         
-        POIXMLDocument docx = docxFiller.getDocumentFromFile(docxFile);
-        docx = docxFiller.fill(docx, Integer.parseInt(moneyPerHourField.getText()));
-        docxFiller.saveToFile(docx);
+        alert.showAndWait();
     }
     
 }
