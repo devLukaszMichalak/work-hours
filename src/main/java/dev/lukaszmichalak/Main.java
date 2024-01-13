@@ -21,6 +21,7 @@ public class Main extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 270, 200);
         scene.getStylesheets().add(getClass().getResource("main.css").toExternalForm());
         
+        mainStage.setTitle("Work hours");
         mainStage.setScene(scene);
         mainStage.setResizable(false);
         mainStage.show();
