@@ -20,9 +20,9 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainController implements Initializable {
+public class AppController implements Initializable {
     
-    private static final Logger log = LogManager.getLogger(MainController.class);
+    private static final Logger log = LogManager.getLogger(AppController.class);
     
     private static final Filler xlsxFiller = new XlsxFiller();
     private static final Filler docxFiller = new DocxFiller();
@@ -67,7 +67,7 @@ public class MainController implements Initializable {
         FileChooser.ExtensionFilter xlsxFilter = new FileChooser.ExtensionFilter("Xlsx files (*.xlsx)", "*.xlsx");
         fileChooser.getExtensionFilters().add(xlsxFilter);
         
-        xlsxFile = fileChooser.showOpenDialog(Main.mainStage);
+        xlsxFile = fileChooser.showOpenDialog(App.mainStage);
         
         if (xlsxFile != null) {
             System.out.println("Selected file: " + xlsxFile.getAbsolutePath());
@@ -83,7 +83,7 @@ public class MainController implements Initializable {
         FileChooser.ExtensionFilter xlsxFilter = new FileChooser.ExtensionFilter("Docx files (*.docx)", "*.docx");
         fileChooser.getExtensionFilters().add(xlsxFilter);
         
-        docxFile = fileChooser.showOpenDialog(Main.mainStage);
+        docxFile = fileChooser.showOpenDialog(App.mainStage);
         
         if (docxFile != null) {
             System.out.println("Selected file: " + docxFile.getAbsolutePath());
