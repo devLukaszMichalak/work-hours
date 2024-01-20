@@ -35,6 +35,11 @@
             <artifactId>javafx-fxml</artifactId>
             <version>17.0.6</version>
         </dependency>
+        <dependency>
+            <groupId>dev.lukaszmichalak</groupId>
+            <artifactId>polish-number-speller</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>

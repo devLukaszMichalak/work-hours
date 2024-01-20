@@ -1,6 +1,7 @@
 package dev.lukaszmichalak.fillers;
 
 import dev.lukaszmichalak.fillers.helpers.MonthTranslator;
+import dev.lukaszmichalak.spell.Speller;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ooxml.POIXMLDocument;
@@ -18,6 +19,7 @@ import java.util.Calendar;
 public class DocxFiller implements Filler {
     
     private static final Logger log = LogManager.getLogger(DocxFiller.class);
+    private static final Speller speller = new Speller();
     
     @Override
     public POIXMLDocument fill(POIXMLDocument document, int moneyPerHour) {
@@ -37,10 +39,20 @@ public class DocxFiller implements Filler {
             case "dayrange" -> fillDayRange(run);
             case "hours" -> fillHours(run);
             case "total" -> fillTotal(run, moneyPerHour);
+            case "totalspell" -> fillTotalSpell(run, moneyPerHour);
             case "moneyperhour" -> fillMoneyPerHour(run, moneyPerHour);
             default -> {
             }
         }
+    }
+    
+    private void fillTotalSpell(XWPFRun run, int moneyPerHour) {
+        cleanRun(run);
+        run.setItalic(false);
+        
+        int workingHours = getWorkingHours();
+        
+        run.setText(speller.spell(workingHours * moneyPerHour));
     }
     
     private void fillTotal(XWPFRun run, int moneyPerHour) {
@@ -122,7 +134,6 @@ public class DocxFiller implements Filler {
         int month = Calendar.getInstance().get(Calendar.MONTH);
         String monthText = MonthTranslator.getMonthNameInPolish(month).toUpperCase();
         int year = Calendar.getInstance().get(Calendar.YEAR);
-        
         
         run.setText(monthText + " " + year);
     }
