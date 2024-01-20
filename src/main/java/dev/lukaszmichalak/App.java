@@ -3,6 +3,7 @@ package dev.lukaszmichalak;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -16,6 +17,9 @@ public class App extends Application {
     @Override
     public void start(Stage mainStage) throws Exception {
         App.mainStage = mainStage;
+        
+        Image icon = new Image(getClass().getResourceAsStream("icon.png"));
+        mainStage.getIcons().add(icon);
         
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("app.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 270, 200);
