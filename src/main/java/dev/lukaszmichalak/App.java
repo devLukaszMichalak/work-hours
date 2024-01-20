@@ -23,7 +23,8 @@ public class App extends Application {
         
         mainStage.setTitle("Work hours");
         mainStage.setScene(scene);
-        mainStage.setResizable(false);
+        mainStage.setMinHeight(230);
+        mainStage.setMinWidth(270);
         mainStage.show();
     }
 }

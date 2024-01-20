@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Button?>
-<VBox spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="dev.lukaszmichalak.AppController">
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<VBox spacing="20.0" xmlns:fx="http://javafx.com/fxml" fx:controller="dev.lukaszmichalak.AppController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
 
-    <HBox spacing="20.0">
+    <HBox spacing="20.0" alignment="CENTER">
         <Button fx:id="xlsxButton" onAction="#onXlsxClick" text="Select xlsx file" styleClass="xlsx-button"/>
         <Button fx:id="docxButton" onAction="#onDocxClick" text="Select docx file" styleClass="docx-button"/>
     </HBox>
 
-    <HBox>
+    <HBox alignment="CENTER">
         <TextField fx:id="moneyPerHourField" promptText="Enter money per hour"/>
     </HBox>
 
-    <HBox>
+    <HBox alignment="CENTER">
         <Button fx:id="generateButton" onAction="#onGenerateClick" text="Generate result" styleClass="save-button"/>
     </HBox>
 
