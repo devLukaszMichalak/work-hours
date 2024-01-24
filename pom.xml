@@ -6,7 +6,7 @@
 
     <groupId>dev.lukaszmichalak</groupId>
     <artifactId>auto-work-xlsx</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -77,7 +77,7 @@
                                     <mainClass>dev.lukaszmichalak.Main</mainClass>
                                 </transformer>
                             </transformers>
-                            <finalName>work-hours</finalName>
+                            <finalName>work-hours-1.0.0</finalName>
                         </configuration>
                     </execution>
                 </executions>
